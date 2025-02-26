@@ -1,20 +1,19 @@
-package Pessoa;
+package Camisa;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class PessoaApp {
-    
+public class CamisaApp {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        ArrayList<Pessoa> list = new ArrayList<>();
+        ArrayList<Camisa> list = new ArrayList<>();
 
         int op = 0;
         while (op != 4) {
             System.out.println("\n:::::::MENU::::::::");
-            System.out.println("1- Cadastrar");
-            System.out.println("2- Listar");
-            System.out.println("3- Remover");
+            System.out.println("1- Cadastrar Camisa");
+            System.out.println("2- Listar Camisa");
+            System.out.println("3- Remover Camisa");
             System.out.println("4- Sair");
             System.out.println("Escolha a opção: ");
             op = sc.nextInt();
@@ -22,30 +21,33 @@ public class PessoaApp {
 
             switch (op) {
                 case 1:
-                    // Cadastrar
-                    System.out.println("Digite o Nome: ");
-                    String nome = sc.nextLine();
+                    // Cadastrar Camisa
+                    System.out.println("Digite a Cor: ");
+                    String cor = sc.nextLine();
 
-                    System.out.println("Digite o Telefone: ");
-                    String telefone = sc.nextLine();
+                    System.out.println("Digite o Tamanho: ");
+                    String tamanho = sc.nextLine();
 
-                    list.add(new Pessoa(nome, telefone));
-                    System.out.println("Cadastro Registrado com Sucesso.");
+                    System.out.println("Digite o tipo: ");
+                    String tipo = sc.nextLine();
+
+                    list.add(new Camisa(cor, tamanho, tipo));
+                    System.out.println("Camisa Registrado com Sucesso.");
                     break;
 
                 case 2:
-                    // Listar
+                    // Listar Camisa
                     if (list.isEmpty()) {
                         System.out.println("Lista Vazia.");
                     } else {
-                        for (Pessoa p : list) {
-                            System.out.println("Nome: " + p.getNome() + "\n" + "Telefone: " + p.getTelefone());
+                        for (Camisa p : list) {
+                            System.out.println("Cor: " + p.getCor() + "\n" + "Tamanho: " +p.getTamanho() +"\n" + "Tipo: " +p.getTipo());
                         }
                     }
                     break;
 
                 case 3:
-                    // Remover
+                    // Remover Camisa
                     if (list.isEmpty()) {
                         System.out.println("Lista Vazia.");
                     } else {
@@ -55,7 +57,7 @@ public class PessoaApp {
 
                         if (indice >= 0 && indice < list.size()) {
                             list.remove(indice);
-                            System.out.println("Contato Removido com Sucesso!");
+                            System.out.println("Camisa Removida com Sucesso!");
                         } else {
                             System.out.println("Índice Inválido! Tente novamente.");
                         }
@@ -74,3 +76,4 @@ public class PessoaApp {
         sc.close();
     }
 }
+
