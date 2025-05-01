@@ -1,0 +1,9 @@
+com\mycompany\cadastro\Cadastro.class
+com\mycompany\cadastro\view\TelaCadastro.class
+com\mycompany\cadastro\view\TelaCadastro$3.class
+com\mycompany\cadastro\view\TelaCadastro$1.class
+com\mycompany\cadastro\conexao\ConexaoMySQL.class
+com\mycompany\cadastro\controle\PessoaControle.class
+com\mycompany\cadastro\modelo\Pessoa.class
+com\mycompany\cadastro\view\TelaCadastro$2.class
+com\mycompany\cadastro\dao\PessoaDAO.class

@@ -1,0 +1,12 @@
+create database cadastro_pessoas;
+use cadastro_pessoas;
+
+
+
+
+
+CREATE TABLE pessoa (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    idade INT
+);
