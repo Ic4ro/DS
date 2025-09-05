@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Clientes</title>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #2b2b2b;
+            color: #333;
+        }
+
+        h2 {
+            color: #0f2edd;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        /* Card do formulário */
+        .form-container {
+            background: #4964fcc5;
+            padding: 25px;
+            margin: 0 auto 20px auto;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgb(255, 255, 255);
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        label span {
+            margin-left: 8px;
+        }
+
+        input {
+            width: 96%;
+            padding: 10px 12px;
+            margin-top: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 6px rgba(0,123,255,0.2);
+        }
+
+        .input-erro {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 6px rgba(220,53,69,0.3);
+        }
+
+        /* Botões */
+        .botoes {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+        }
+
+        .btn-adicionar {
+            background-color: #1fa33e;
+            color: white;
+            box-shadow: 0 3px 6px rgba(40,167,69,0.3);
+        }
+
+        .btn-adicionar:hover {
+            background-color: #0fdf3c;
+        }
+
+        .btn-limpar {
+            background-color: #a81919;
+            color: white;
+            box-shadow: 0 3px 6px rgba(108,117,125,0.3);
+        }
+
+        .btn-limpar:hover {
+            background-color: #ff0707;
+        }
+
+        .btn-excluir {
+            background-color: #d41326;
+            padding: 6px 12px;
+            font-size: 13px;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgb(226, 5, 5);
+        }
+
+        .btn-excluir:hover {
+            background-color: #ec0e0e;
+        }
+
+        /* Tabela */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        th {
+            background-color: #0f2edd;
+            color: white;
+            font-weight: 600;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <h2>Cadastro de Clientes</h2>
+
+    <!-- Formulário em card -->
+    <div class="form-container">
+        <label for="nome">👤 <span>Nome:</span></label>
+        <input type="text" id="nome" placeholder="Digite o nome do cliente">
+        
+        <label for="email">📧 <span>Email:</span></label>
+        <input type="email" id="email" placeholder="exemplo@email.com">
+        
+        <label for="telefone">📱 <span>Telefone:</span></label>
+        <input type="text" id="telefone" placeholder="(99) 99999-9999">
+
+        <div class="botoes">
+            <button class="btn-adicionar" onclick="adicionarCliente()">➕ Adicionar Cliente</button>
+            <button type="button" class="btn-limpar" onclick="limparCampos()">🧹 Limpar</button>
+        </div>
+    </div>
+    
+    <!-- Tabela -->
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="listaClientes"></tbody>
+    </table>
+
+    <!-- Biblioteca de formatação -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // Máscara de telefone automática
+        document.getElementById("telefone").addEventListener("input", function(e) {
+            let valor = e.target.value.replace(/\D/g, ""); // só números
+            if (valor.length > 11) valor = valor.slice(0, 11);
+
+            if (valor.length <= 10) {
+                e.target.value = valor.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
+            } else {
+                e.target.value = valor.replace(/(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
+            }
+        });
+
+        function adicionarCliente() {
+            let nome = document.getElementById('nome');
+            let email = document.getElementById('email');
+            let telefone = document.getElementById('telefone');
+
+            nome.classList.remove("input-erro");
+            email.classList.remove("input-erro");
+            telefone.classList.remove("input-erro");
+
+            if (nome.value === '' || email.value === '' || telefone.value === '') {
+                Swal.fire('Atenção!', 'Preencha todos os campos!', 'warning');
+                if (nome.value === '') nome.classList.add("input-erro");
+                if (email.value === '') email.classList.add("input-erro");
+                if (telefone.value === '') telefone.classList.add("input-erro");
+                return;
+            }
+
+            if (!/^\(\d{2}\)\s\d{4,5}-\d{4}$/.test(telefone.value)) {
+                Swal.fire('Erro!', 'Digite um telefone válido no formato (99) 99999-9999.', 'error');
+                telefone.classList.add("input-erro");
+                return;
+            }
+            
+            let tabela = document.getElementById('listaClientes');
+            let novaLinha = tabela.insertRow();
+            novaLinha.insertCell(0).innerText = nome.value;
+            novaLinha.insertCell(1).innerText = email.value;
+            novaLinha.insertCell(2).innerText = telefone.value;
+            let acaoCell = novaLinha.insertCell(3);
+
+            let botaoExcluir = document.createElement('button');
+            botaoExcluir.innerText = '🗑 Excluir';
+            botaoExcluir.classList.add('btn-excluir');
+            botaoExcluir.onclick = function () {
+                Swal.fire({
+                    title: 'Tem certeza?',
+                    text: "Você não poderá reverter isso!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sim, excluir!',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        tabela.deleteRow(novaLinha.rowIndex - 2);
+                        Swal.fire('Excluído!', 'O cliente foi removido.', 'success');
+                    }
+                });
+            };
+            acaoCell.appendChild(botaoExcluir);
+            
+            limparCampos();
+        }
+
+        function limparCampos() {
+            document.getElementById('nome').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('telefone').value = '';
+
+            document.getElementById('nome').classList.remove("input-erro");
+            document.getElementById('email').classList.remove("input-erro");
+            document.getElementById('telefone').classList.remove("input-erro");
+        }
+    </script>
+</body>
+</html>
+
+<!-- Validação avançada: todos os campos obrigatórios (nome, email, telefone). 
+     Adicionando o email com base no pedido de requisitos. 
+     Máscara automática no telefone → (99) 99999-9999. 
+     Validação de formato para garantir que o telefone esteja correto. 
+     SweetAlert2 para mensagens modernas (erro, alerta e sucesso). 
+     Campos inválidos ficam com borda vermelha (.input-erro). -->
